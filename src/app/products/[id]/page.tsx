@@ -1,7 +1,9 @@
 import AddToCart from "@/components/AddToCart";
+import ProductCard from "@/components/ProductCard";
 import { addToCart } from "@/lib/actions/cart";
-import { getProductById } from "@/lib/actions/products";
+import { getProductById, getProducts } from "@/lib/actions/products";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 export default async function ProductDetailPage({
@@ -10,6 +12,7 @@ export default async function ProductDetailPage({
   params: { id: string };
 }) {
   const product = await getProductById(+id);
+  const products = await getProducts();
 
   if (!product) {
     notFound();
@@ -30,6 +33,7 @@ export default async function ProductDetailPage({
           height={1024}
         />
       </div>
+
       <div className="w-full space-y-3 p-5 md:w-1/2">
         <h1 className="text-3xl font-bold leading-10">{product.name}</h1>
         <div className="text-base leading-5">
@@ -44,6 +48,21 @@ export default async function ProductDetailPage({
         <div className="flex justify-end">
           <AddToCart addToCartAction={addToCartAction} />
         </div>
+      </div>
+
+      <div className="flex w-full flex-wrap gap-2">
+        <h1 className="-mb-2 mt-2 text-2xl font-bold">Related Products</h1>
+        <ul role="list" className="m-2 flex flex-row flex-wrap">
+          {products
+            .filter((p) => p.id !== +id)
+            .map((product) => (
+              <li key={product.id} className="md:w-1/5">
+                <Link href={`/products/${product.id}`}>
+                  <ProductCard {...product} small />
+                </Link>
+              </li>
+            ))}
+        </ul>
       </div>
     </div>
   );
