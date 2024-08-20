@@ -121,3 +121,8 @@ export type Product = {
 };
 
 export const getProducts = async (): Promise<Product[]> => products;
+
+export const getProductById = async (
+  id: number
+): Promise<Product | undefined> =>
+  getProducts().then((products) => products.find((p) => p.id === id));
