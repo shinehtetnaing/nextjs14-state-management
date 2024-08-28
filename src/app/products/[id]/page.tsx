@@ -1,5 +1,7 @@
 import AddToCart from "@/components/AddToCart";
+import AverateRating from "@/components/AverateRating";
 import ProductCard from "@/components/ProductCard";
+import Review from "@/components/Review";
 import { addToCart } from "@/lib/actions/cart";
 import { getProductById, getProducts } from "@/lib/actions/products";
 import Image from "next/image";
@@ -45,10 +47,15 @@ export default async function ProductDetailPage({
         <div className="text-sm font-light italic leading-5">
           {product.description}
         </div>
+
+        <AverateRating reviews={product.reviews} />
+
         <div className="flex justify-end">
           <AddToCart addToCartAction={addToCartAction} />
         </div>
       </div>
+
+      <Review reviews={product.reviews} id={product.id} />
 
       <div className="flex w-full flex-wrap gap-2">
         <h1 className="-mb-2 mt-2 text-2xl font-bold">Related Products</h1>
