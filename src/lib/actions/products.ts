@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 const products = [
   {
     id: 1,
@@ -117,7 +119,12 @@ export type Product = {
   name: string;
   price: number;
   description: string;
-  // reviews: Review[];
+  reviews: Review[];
+};
+
+export type Review = {
+  rating: number;
+  text: string;
 };
 
 export const getProducts = async (): Promise<Product[]> => products;
@@ -126,3 +133,12 @@ export const getProductById = async (
   id: number
 ): Promise<Product | undefined> =>
   getProducts().then((products) => products.find((p) => p.id === id));
+
+export const addReview = async (id: number, rating: number, text: string) => {
+  const product = await getProductById(+id);
+  if (product) {
+    product.reviews.push({ rating, text });
+  }
+
+  revalidatePath("/products/" + id);
+};
