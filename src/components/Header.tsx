@@ -7,10 +7,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
+import { getCart } from "@/lib/actions/cart";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
-export default function Header() {
+export default async function Header() {
+  const cart = await getCart();
+
   return (
     <header className="mb-10 flex items-center justify-between bg-gray-600 px-3 py-5 shadow-lg">
       <Link href="/">
@@ -20,27 +23,39 @@ export default function Header() {
       <Dialog>
         <DialogTrigger>
           <div className="rounded-full bg-white px-3 py-1 text-xl text-slate-800">
-            2
+            {cart.products.length}
           </div>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-center">Your Cart</DialogTitle>
           </DialogHeader>
-          <div className="flex items-center justify-center py-2">
-            {true ? (
-              <p className="text-lg leading-7 text-gray-600">
-                You have 0 items in your cart.
-              </p>
-            ) : (
-              <div className="grid flex-1 grid-cols-2 gap-2">
-                <p className="font-semibold">Shirt</p>
-                <p className="place-self-end">$39</p>
-              </div>
-            )}
-          </div>
+          {cart.products.length === 0 && (
+            <p className="text-center text-lg leading-7 text-gray-600">
+              You have 0 items in your cart.
+            </p>
+          )}
+          {cart.products.length > 0 && (
+            <>
+              {cart.products.map((product, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between -space-y-1"
+                >
+                  <div className="font-semibold">{product.name}</div>
+                  <div className="place-self-end">
+                    {product.price.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    })}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
           <DialogFooter className="flex flex-1 items-center !justify-between">
-            {true ? (
+            {cart.products.length === 0 ? (
               <DialogClose asChild>
                 <Button type="button" variant="secondary">
                   Close

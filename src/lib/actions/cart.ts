@@ -28,6 +28,10 @@ export type Cart = {
   }[];
 };
 
+export const getCart = async (): Promise<Cart> => {
+  return cart;
+};
+
 export const addToCart = async (productId: number): Promise<Cart> => {
   const product = await getProductById(productId);
   if (product) {
