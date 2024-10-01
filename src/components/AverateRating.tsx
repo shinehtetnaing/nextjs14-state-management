@@ -1,6 +1,9 @@
-import { Review as Reviews } from "@/lib/actions/products";
+"use client";
 
-export default function AverateRating({ reviews }: { reviews: Reviews[] }) {
+import { useReview } from "@/contexts/ReviewContext";
+
+export default function AverateRating() {
+  const [reviews] = useReview();
   return (
     <>
       {reviews && reviews?.length && (

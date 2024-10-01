@@ -1,23 +1,19 @@
 "use client";
 
-import { addReview, Review as Reviews } from "@/lib/actions/products";
+import { useReview } from "@/contexts/ReviewContext";
+import { addReview } from "@/lib/actions/products";
 import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
-export default function Review({
-  reviews,
-  id,
-}: {
-  reviews: Reviews[];
-  id: number;
-}) {
+export default function Review({ id }: { id: number }) {
+  const [reviews, setReviews] = useReview();
   const [reviewText, setReviewText] = useState("");
   const [reviewRating, setReviewRating] = useState(5);
 
   const addReviewAction = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await addReview(id, reviewRating, reviewText);
+    setReviews(await addReview(id, reviewRating, reviewText));
     setReviewText("");
     setReviewRating(5);
   };

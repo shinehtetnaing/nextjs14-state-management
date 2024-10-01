@@ -2,7 +2,7 @@
 
 import { getProductById } from "./products";
 
-const cart: Cart = {
+const initialCart: Cart = {
   products: [
     {
       id: 1,
@@ -29,18 +29,23 @@ export type Cart = {
 };
 
 export const getCart = async (): Promise<Cart> => {
-  return cart;
+  return initialCart;
 };
 
 export const addToCart = async (productId: number): Promise<Cart> => {
   const product = await getProductById(productId);
   if (product) {
-    cart.products.push({
+    initialCart.products.push({
       name: product.name,
       id: product.id,
       image: product.image,
       price: product.price,
     });
   }
-  return cart;
+  return initialCart;
+};
+
+export const clearCart = async (): Promise<Cart> => {
+  initialCart.products = [];
+  return initialCart;
 };

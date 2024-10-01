@@ -134,11 +134,16 @@ export const getProductById = async (
 ): Promise<Product | undefined> =>
   getProducts().then((products) => products.find((p) => p.id === id));
 
-export const addReview = async (id: number, rating: number, text: string) => {
+export const addReview = async (
+  id: number,
+  rating: number,
+  text: string
+): Promise<Review[]> => {
   const product = await getProductById(+id);
   if (product) {
     product.reviews.push({ rating, text });
   }
 
   revalidatePath("/products/" + id);
+  return product!.reviews;
 };
