@@ -20,10 +20,6 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const addToCartAction = async () => {
-    return await addToCart(+id);
-  };
-
   return (
     <div className="flex flex-wrap">
       <div className="w-full md:w-1/2">
@@ -51,7 +47,7 @@ export default async function ProductDetailPage({
         <AverateRating reviews={product.reviews} />
 
         <div className="flex justify-end">
-          <AddToCart addToCartAction={addToCartAction} />
+          <AddToCart productId={id} />
         </div>
       </div>
 
