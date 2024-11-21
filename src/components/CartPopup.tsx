@@ -9,12 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useCart } from "@/contexts/CartContext";
 import { clearCart } from "@/lib/actions/cart";
 import { Button } from "./ui/button";
+import { useCart, setCart } from "@/store/store";
+import { useDispatch } from "react-redux";
 
 export default function CartPopup() {
-  const [cart, setCart] = useCart();
+  const cart = useCart();
+  const dispatch = useDispatch();
 
   return (
     <Dialog>
@@ -64,7 +66,7 @@ export default function CartPopup() {
                 type="button"
                 variant="secondary"
                 onClick={async () => {
-                  setCart(await clearCart());
+                  dispatch(setCart(await clearCart()));
                 }}
               >
                 Clear
