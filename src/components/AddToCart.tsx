@@ -1,16 +1,17 @@
 "use client";
 
-import { useCart } from "@/contexts/CartContext";
 import { addToCart } from "@/lib/actions/cart";
+import { setCart } from "@/store/store";
+import { useDispatch } from "react-redux";
 import { Button } from "./ui/button";
 
 export default function AddToCart({ productId }: { productId: string }) {
-  const [, setCart] = useCart();
+  const dispatch = useDispatch();
 
   return (
     <Button
       onClick={async () => {
-        setCart(await addToCart(+productId));
+        dispatch(setCart(await addToCart(+productId)));
       }}
     >
       Add To Cart
